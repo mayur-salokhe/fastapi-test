@@ -13,7 +13,7 @@ from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
 
 models.Base.metadata.create_all(bind=engine)
-
+# start
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
