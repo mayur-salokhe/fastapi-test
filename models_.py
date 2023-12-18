@@ -5,6 +5,7 @@ from database import Base
 from sqlalchemy import Enum as SQLEnum
 from enum import Enum
 
+##Models for api.microbiome
 
 class GenderEnum(str, Enum):
     MALE = "Male"
@@ -47,6 +48,13 @@ class Address(Base):
     country_id = Column(Integer,ForeignKey("countries.id"))
 
     user_relation = relationship("User",back_populates="address_relation")
+
+class Country(Base):
+    __tablename__ = "countries"
+
+    id = Column(Integer,primary_key=True)
+    country_name = Column(String)
+
 
 class Organization(Base):
     __tablename__ = "organization"
@@ -100,16 +108,18 @@ class Order(Base):
     org_id = Column(Integer, ForeignKey("organization.id"))
     ord_price = Column(Numeric)
     user_id = Column(Integer,ForeignKey("user.id"))
-    #payment_method_id = Column(Integer,ForeignKey("user_payment_method.id"))
-    #shipping_address_id = Column(Integer,ForeignKey("address.id"))
+    payment_method_id = Column(Integer,ForeignKey("user_payment_method.id"))
+    shipping_address_id = Column(Integer,ForeignKey("address.id"))
     total_orders = Column(Integer)
-    #order_status = Column(String,ForeignKey("order_status.id"))
+    order_status = Column(String,ForeignKey("order_status.id"))
 
     
     user_relation = relationship("User",back_populates="order_relation")
     organization_relation = relationship("Organization",back_populates="order_relation")
     product_relation = relationship("Product",back_populates="order_relation")
-    
+    payment_method_relation = relationship("UserPaymentMethod")
+    address_relation = relationship("Address")
+    order_relation = relationship("Order")
 
 
 class OrderItem(Base):
